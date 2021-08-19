@@ -37,6 +37,15 @@ def create_user():
     return jsonify(new_user.to_dict())
 
 
+@app.route('/api/users/<id>')
+def get_user(id):
+    """
+    [GET] /api/users/<id>  id: id of the user
+    """
+    user = User.query.get_or_404(id)
+    return jsonify(user.to_dict())
+
+
 @app.route('/api/posts')
 def posts():
     """
