@@ -56,7 +56,7 @@ def create_post():
     # Grab data from request body
     title = data.get('title')
     body = data.get('body')
-    user_id = data.get('user_id')
+    user_id = data.get('user_id', 1)
 
     # Sad path - request body is missing key
     if not title or not body or not user_id:
