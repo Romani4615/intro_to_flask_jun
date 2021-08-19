@@ -37,13 +37,21 @@ def create_user():
     return jsonify(new_user.to_dict())
 
 
-@app.route('/api/users/<id>')
+@app.route('/api/users/<int:id>')
 def get_user(id):
     """
     [GET] /api/users/<id>  id: id of the user
     """
     user = User.query.get_or_404(id)
     return jsonify(user.to_dict())
+
+
+@app.route('/api/users/delete/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'success': 'User has been deleted'})
 
 
 @app.route('/api/posts')
