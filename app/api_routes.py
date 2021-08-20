@@ -1,6 +1,18 @@
 from app import app, db
 from flask import jsonify, request
 from app.models import User, Post
+from app.auth import basic_auth
+
+
+@app.route('/tokens', methods=['POST'])
+@basic_auth.login_required
+def get_token():
+    user = basic_auth.current_user()
+    token = user.get_token()
+    db.session.commit()
+    return jsonify({
+        'token': token
+    })
 
 
 @app.route('/api/users')
