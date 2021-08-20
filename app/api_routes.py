@@ -1,5 +1,5 @@
 from app import app, db
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from app.models import User, Post
 from app.auth import basic_auth, token_auth
 
@@ -60,7 +60,10 @@ def get_user(id):
 
 
 @app.route('/api/users/delete/<int:id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_user(id):
+    if token_auth.current_user().id != id:
+        abort(403)
     user = User.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()
